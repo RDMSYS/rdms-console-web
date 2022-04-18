@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function (event) {
+  $("#view_mode_grid").attr("disabled", true);
+  $("#view_mode_list").attr("disabled", false);
+  
   const showNavbar = (toggleId, navId, bodyId, headerId) => {
     const toggle = document.getElementById(toggleId),
       nav = document.getElementById(navId),
@@ -48,5 +51,8 @@ function view_mode_changer(){
 
     }
 }
+
+
+
 
 });

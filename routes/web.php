@@ -17,5 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hostes', [Hostes::class,'index'])->name('hostes.index');
-Route::get('/hostes/{grid}/{all}', [Hostes::class,'view'])->name('hostes.view');
+Route::get('/devices', [Hostes::class,'index'])->name('hostes.index');
+Route::get('/devices/create', [Hostes::class,'create'])->name('hostes.create');
+Route::post('/device/add', [Hostes::class,'store'])->name('hostes.store');
+Route::get('/devices/{viewtype}/{hoststatus}', [Hostes::class,'view'])->name('hostes.view');

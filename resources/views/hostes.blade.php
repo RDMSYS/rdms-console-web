@@ -3,99 +3,90 @@
 
 
 @section('title',"Console | Hostes")
+@section('headers')
+
+@endsection
 @section('body')
 
 <div class="py-2 ">
       <div class="d-flex bd-highlight">
         <div class="p-2 flex-grow-1 bd-highlight">
-          <h2 class="h2">Hostes</h2>
+          <h2 class="h2">Devices</h2>
         </div>
         <div class="p-2 bd-highlight">
-          <button type="button" class="btn btn-primary">Add new host</button>
+          <a href="{{route('hostes.create')}}"  type="button" class="btn btn-success p-2"><i class='bx bxs-plus-circle' style='color:#ffffff' > </i> Add new host</a>
         </div>
       </div>
       <div class="d-flex bd-highlight">
         <div class="me-auto p-2 bd-highlight"></div>
-        <div class="bd-highlight  rounded ">
-          <button type="button" id="view_mode_grid" class="btn btn-sm btn-primary view_mode"><i class='bx bxs-grid' style="font-size:18px" ></i></button>
-          <button type="button" class="btn btn-sm btn-light  view_mode" disabled><i class='bx bx-list-ul' style="font-size:18px" ></i></button> 
-
+        <div class="bd-highlight mx-2  rounded ">
+          <button type="button" class="btn btn-sm btn-primary  " id="view_mode_refresh">
+            <i class='bx bx-refresh'  style="font-size:20px"  ></i>
+          </div>
+        <div class="bd-highlight mx-2 rounded ">
+          <button type="button" class="btn btn-sm btn-primary  view_mode" id="view_mode_grid"><i class='bx bxs-grid' style="font-size:20px" ></i></button>
+          <button type="button" class="btn btn-sm btn-light  view_mode" id="view_mode_list"  ><i class='bx bx-list-ul' style="font-size:20px" ></i></button> 
           </div>
       </div>
     </div>
-    <div class="container">
-      <h4>Main</h4>
-      <div class="row">
-        <div class="col" style="margin: 3px; padding: 0px">
-          <div class="card-container">
-            <div class="image-holder">
-              <img src="assets/logo/win10-default.jpg" alt="" />
-            </div>
-            <div class="card-body text-end">
-              <h5 class="text-light fw-bold">PC 1</h5>
-              <span class="sub-h text-light"
-                ><i class="bx bxs-square-rounded text-success"></i> online</span
-              >
-            </div>
-          </div>
-        </div>
+    <section id="hostes_holder">
 
-        <div class="col" style="margin: 3px; padding: 0px">
-          <div class="card-container">
-            <div class="image-holder">
-              <img src="assets/logo/win10-default.jpg" alt="" />
-            </div>
-            <div class="card-body text-end">
-              <h5 class="text-light fw-bold">PC 1</h5>
-              <span class="sub-h text-light"
-                ><i class="bx bxs-square-rounded text-success"></i> online</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="col" style="margin: 3px; padding: 0px">
-          <div class="card-container">
-            <div class="image-holder">
-              <img src="assets/logo/win10-default.jpg" alt="" />
-            </div>
-            <div class="card-body text-end">
-              <h5 class="text-light fw-bold">PC 1</h5>
-              <span class="sub-h text-light"
-                ><i class="bx bxs-square-rounded text-success"></i> online</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="col" style="margin: 3px; padding: 0px">
-          <div class="card-container">
-            <div class="image-holder">
-              <img src="assets/logo/win10-default.jpg" alt="" />
-            </div>
-            <div class="card-body text-end">
-              <h5 class="text-light fw-bold">PC 1</h5>
-              <span class="sub-h text-light"
-                ><i class="bx bxs-square-rounded text-danger"></i> offline</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </section>
+
     @endsection
 
     @section('scripts')
     <script>
-      $( document ).ready(function() {
-      var view_mode_grid = $("#view_mode_grid");
-      view_mode_grid.click(() =>{
-        $.ajax({
-          url: 'url',
-          context: document.body
-        }).done(function() {
-          $( this ).addClass( "done" );
-        });
-      })
+    $(document).ready(function () {
+    let origin = location.origin;
+
+    var view_mode_grid = $("#view_mode_grid");
+    var view_mode_list = $("#view_mode_list");
+    
+    view_mode_grid.click(function () {
+        hostListApi("grid", "all");
+        view_mode_grid.attr("disabled", true);
+        view_mode_list.attr("disabled", false);
     });
-      
-    </script>
+    view_mode_list.click(function () {
+        hostListApi("list", "all");
+        view_mode_list.attr("disabled", true);
+        view_mode_grid.attr("disabled", false);
+    });
+
+    var hostListApi = (viewMode, datatype) => {
+        var hostes_holder = $("#hostes_holder");
+        var preloader = new PreLoader(hostes_holder[0]);
+        $.ajax({
+            url: `${origin}/devices/${viewMode}/${datatype}`,
+            type: "GET",
+            beforeSend: function () {
+                preloader.start()
+            },
+            success: function (result) {
+                hostes_holder.html(result);
+            },
+            error: function (e) {
+                // var alertBox = new AlertBox({head:e.responseJSON.head,message:e.responseJSON.message,code:e.responseJSON.code,age:3000});
+                hostes_holder.html(`
+                <div><h1 class="h4 text-center">${e.responseJSON.head}</h1><div>
+                <p class="text-center">${e.responseJSON.message}</p>
+                `);
+                // alertBox.error()
+                console.log(e);
+                // preloader.stop()
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+        });
+        return;
+    };
+
+    hostListApi("grid", "all");
+});
+
+  </script>
+    
+
     @endsection
