@@ -57,17 +57,17 @@
                                     @csrf
                                       <div class="form-group my-1">
                                           <label for="hostname">Hostname or IP </label>
-                                          <input type="text" class="form-control " id="hostname" aria-datatype="string" name="hostname" aria-required="true"  placeholder="Hostname or IP">
+                                          <input type="text" class="form-control " id="hostname" aria-datatype="alpha_num" name="hostname" aria-required="true"  placeholder="Hostname or IP">
                                           <span style="font-size:13px">*Requierd</span>
                                         </div>
                                       <div class="form-group my-1">
                                         <label for="serialno">Serial number </label>
-                                        <input type="text" class="form-control" id="serialno" name="serialno" aria-datatype="string" aria-required="true" placeholder="Serial number">
+                                        <input type="text" class="form-control" id="serialno" name="serialno" aria-datatype="serial_key" aria-required="true" placeholder="Serial number">
                                         <span style="font-size:13px">*Requierd</span>
                                       </div>
                                       <div class="form-group my-1">
                                         <label for="group">Group </label>
-                                        <input type="text" list="grouplist" class="form-control" id="group" aria-datatype="string" name="group" aria-required="true" placeholder="Group">
+                                        <input type="text" list="grouplist" class="form-control" id="group" aria-datatype="alpha_num" name="group" aria-required="true" placeholder="Group">
                                         <span style="font-size:13px">*Requierd</span>
                                         <datalist id="grouplist">
                                           @foreach($groups as $group)
@@ -78,7 +78,7 @@
                                       </div>
                                       <div class="form-group my-1">
                                         <label for="comstring">Community String </label>
-                                        <input type="text" class="form-control" id="comstring" name="comstring" aria-datatype="string" aria-required="true" placeholder="Community String">
+                                        <input type="text" class="form-control" id="comstring" name="comstring" aria-datatype="alpha_num" aria-required="true" placeholder="Community String">
                                         <span style="font-size:13px">*Requierd</span>
                                       </div>
                                       <div class="my-4">

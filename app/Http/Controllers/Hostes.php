@@ -46,60 +46,33 @@ class Hostes extends Controller
     {
         $validatedData = $request->validate(
             [
-                'hostname' => 'required|alpha_num',
-                'serialno' => 'required|alpha_num',
-                'group' => 'required|alpha_num',
-                'comstring' => 'required|alpha_num',
+                'hostname' => "required|regex:/^[a-zA-Z0-9-_]+(([',. -][a-zA-Z ])?[a-zA-Z0-9-_]*)*$/u",
+                'serialno' => 'required|regex:/^([a-zA-Z0-9]){16}$/',
+                'group' => "required|regex:/^[a-zA-Z0-9-_]+(([',. -][a-zA-Z ])?[a-zA-Z0-9-_]*)*$/u",
+                'comstring' => "required|regex:/^[a-zA-Z0-9-_]+(([',. -][a-zA-Z ])?[a-zA-Z0-9-_]*)*$/u"
             ],
             [
                 'hostname.required' => 'The Hostname is required.',
-                'hostname.alpha_num' => 'Special characters not allowed',
+                'hostname.regex' => 'Please provide valid name',
                 'serialno.required' => 'The serial number is required.',
-                'serialno.alpha_num' => 'Special characters not allowed',
+                'serialno.regex' => 'Enter a valid serial key. It must be 16 characters',
                 'group.required' => 'The Group name is required.',
-                'group.alpha_num' => 'Special characters not allowed',
+                'group.regex' => 'Please provide valid Group name ',
                 'comstring.required' => 'The Community String is required.',
-                'comstring.alpha_num' => 'Special characters not allowed',
+                'comstring.regex' => 'Please provide valid Community String ',
             ]
         );
-
+            
         $all_data = $request->post();
         unset($all_data['_token']);
-        $ch = curl_init();
-        $url = 'http://127.0.0.1:8080/api/device';
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        //     'Content-Type: application/json'
-        // ));
-        curl_setopt($ch, CURLOPT_USERAGENT, 'rdms-console/1.0.0-alpha');
-        curl_setopt(
-            $ch,
-            CURLOPT_POSTFIELDS,
-            $all_data
-        );
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-
-        $res = curl_exec($ch);
-        if(curl_errno($ch)){
-            throw new ApiException('Error',curl_error($ch));
-        }else{
-            $decode = json_decode($res,true);
-            $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-            if($http_status == 404){
-                throw new ApiException('Failed to connect to CDN',"Usually means there's a issue in CDN Server",404);
-            }elseif ($http_status == 502) {
-                throw new ApiException($decode['head'],$decode['message'],502);
-            }
-            
-            if($decode['success']){
-                unset($decode['success']);
-                return $decode;
-            }else{
-                throw new ApiException($decode['head'],$decode['message'],404);
-            }
+        try {
+            $path = 'device';
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results=$apihandler->post($all_data);
+            return $results;
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), $error->getErrorCode());
         }
         return false;
     }
@@ -112,7 +85,16 @@ class Hostes extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $path = 'device/'.$id.'/overview';
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results = $apihandler->fetch();
+        } catch (ApiException $error) {
+            return view('hostnotfound', ['error'=>$error->getErrorMessage()]);
+        }
+
+        return view('host',["result"=>$results[0]]);
     }
 
     /**
@@ -177,6 +159,7 @@ class Hostes extends Controller
                     }
                     $div_group = '';
                     for ($i = 0; $i < $div_count; $i++, $j++) {
+                        $id = $results[$j]['id'];
                         $host_name = $results[$j]['host'];
                         $host_group = $results[$j]['group'];
                         $host_status = (int)($results[$j]['is_online']) ? "online" : 'offline';
@@ -184,6 +167,7 @@ class Hostes extends Controller
 
                         $div_group .=  <<<EOD
                         <div   style="margin: 4px; padding: 0px; width:24.0%">
+                        <a href="/device/$id">
                             <div class="card-container">
                               <div class="image-holder">
                                 <img src="assets/logo/win10-default.jpg" alt="" />
@@ -201,7 +185,9 @@ class Hostes extends Controller
                               </div>
                               
                             </div>
+                            </a>
                           </div>
+                        
                         EOD;
 
                         unset($results[$j]);

@@ -73,7 +73,6 @@
                 <p class="text-center">${e.responseJSON.message}</p>
                 `);
                 // alertBox.error()
-                console.log(e);
                 // preloader.stop()
             },
             cache: false,

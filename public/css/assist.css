@@ -230,10 +230,10 @@ body .info_msg_box{
     color: var(--white-color)
     
 }
-.nav-item{
+.nav-item,.sub-nav-item{
     cursor: pointer;
 }
-.nav-item:hover .nav-link{
+.nav-item:hover .nav-link, .sub-nav-item:hover .sub-nav-link {
         
         border: 1px solid ;
         border-color: var(--first-color) var(--first-color) #fff;

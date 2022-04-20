@@ -1,5 +1,5 @@
 class AlertBox {
-    constructor({ head, message = null, code = null, age }) {
+    constructor({ head, message = null, code = null, age=3000 }) {
         this.head = head;
         this.message = message == null ? "" : message;
         this.code = code == null ? "" : code;
@@ -65,9 +65,13 @@ class FormClass {
     constructor(element) {
         this.element = element;
         this.validation_man = {
-            string: {
-                regex: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/,
-                err_msg: "Special character not allowed",
+            alpha_num: {
+                regex: /^[a-zA-Z0-9-_]+(([',. -][a-zA-Z ])?[a-zA-Z0-9-_]*)*$/,
+                err_msg: "Please provide valid name",
+            },
+            serial_key: {
+                regex: /^([a-zA-Z0-9]){16}$/,
+                err_msg: "Enter a valid serial key. It must be 16 characters",
             },
         };
     }
@@ -75,18 +79,19 @@ class FormClass {
         let validation_man = this.validation_man;
         this.element.forEach(function (element) {
             element.addEventListener("keyup", function (e) {
-                var datatype = this.getAttribute("aria-datatype");
+                var datatype = String(this.getAttribute("aria-datatype"));
+
                 var isRequired = this.getAttribute("aria-required");
                 var info_msg = isRequired ? "*Requierd" : "Optional";
-
                 if (this.value.trim() == "") {
                     this.classList.add("input-invalid");
                     this.previousElementSibling.classList.add("error-text");
                     this.nextElementSibling.classList.add("error-text");
 
                     this.nextElementSibling.innerHTML = info_msg;
-                } else if (
-                    validation_man[datatype]["regex"].test(this.value.trim())
+                }
+                 else if (
+                    !validation_man[datatype]['regex'].test(this.value.trim())
                 ) {
                     this.classList.add("input-invalid");
                     this.previousElementSibling.classList.add("error-text");
@@ -94,7 +99,8 @@ class FormClass {
 
                     this.nextElementSibling.innerHTML =
                         validation_man[datatype]["err_msg"];
-                } else {
+                } 
+                else {
                     this.classList.remove("input-invalid");
                     this.previousElementSibling.classList.remove("error-text");
                     this.nextElementSibling.classList.remove("error-text");
@@ -120,7 +126,7 @@ class FormClass {
 
                     return;
                 } else if (
-                    this.validation_man[datatype]["regex"].test(
+                    !this.validation_man[datatype]['regex'].test(
                         formData.get(key).trim()
                     )
                 ) {
@@ -128,7 +134,7 @@ class FormClass {
                     curr_ele.previousElementSibling.classList.add("error-text");
                     curr_ele.nextElementSibling.classList.add("error-text");
                     curr_ele.nextElementSibling.innerHTML =
-                        this.validation_man[datatype]["err_msg"];
+                    this.validation_man[datatype]["err_msg"];
                     curr_ele.focus();
                     return;
                 }
@@ -157,6 +163,7 @@ class FormClass {
                 alertBox.success();
             },
             error: function (e) {
+                console.log(e);
                 if(e.status == 422){
                     for (const key in e.responseJSON.errors) {
                         var alertBox = new AlertBox({
@@ -166,7 +173,11 @@ class FormClass {
                         });
                         alertBox.error();
                     }
-                }else{
+                }else if(e.status == 409){
+                    var alertBox = new AlertBox({head: e.responseJSON.head,message:e.responseJSON.message});
+                    alertBox.error();
+                }
+                else{
                     var alertBox = new AlertBox({
                         code: e.status,
                         head: e.statusText,
