@@ -43,8 +43,9 @@
         </div>
       </div>
     </div>
-
-    <section class="container" id="main_container" >
+    
+    <section class="container " id="main_container" >
+       
         <div class="sub_nav">
           <ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
             <li class="nav-item" >
@@ -55,14 +56,8 @@
               >
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link"
-                aria-controls="tabs-2"
-                >Drives</a
-              >
-            </li>
-            <li class="nav-item">
                 <a
+                href="{{route('host.io.show',$result['host_id'])}}"
                   class="nav-link"
                   aria-controls="tabs-3"
                   >IO</a
@@ -77,31 +72,26 @@
               </li>
               <li class="nav-item">
                 <a
+                href="{{route('host.softwares.show',$result['host_id'])}}"
                   class="nav-link"
-                  aria-controls="tabs-5"
+                  aria-controls="tabs-4"
                   >Softwares</a
                 >
               </li>
               <li class="nav-item">
-                <a
+                <a href="{{route('host.useraccounts.show',$result['host_id'])}}"
                   class="nav-link"
                   aria-controls="tabs-5"
                   >User accounts</a
                 >
               </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  aria-controls="tabs-6"
-                  >Settings</a
-                >
-              </li>
+              
            
           </ul>
         </div>
           <div class="tab-content" id="tab-content">
             <div
-              class="tab-pane fade w-100 mb-3 show active"
+              class="tab-pane fade w-100 mb-3  show active"
               id="tabs-1"
             >
             <div class="d-flex justify-content-between flex-md-row flex-column">
@@ -261,25 +251,44 @@
                 
             </div>
         </div>
-        <div class="tab-pane fade w-100 mb-3" id="tabs-2"  >
-            <h1 class="text-dark">Tab 2 content</h1>
+          <div class="tab-pane fade w-100 mb-3 " id="tabs-3"  >
+            <div class="panel panel-default panel-condensed device-overview">
+                <div class="panel-heading py-2">
+                    <span class="text-dark h3"> IO Devices</span>
+                </div>
+                <div class="panel-body text-dark">
+                    <div >
+                    </div>
+            </div>
           </div>
-          <div class="tab-pane fade w-100 mb-3" id="tabs-3"  >
-            <h1 class="text-dark">Tab 3 content</h1>
           </div>
           <div class="tab-pane fade w-100 mb-3" id="tabs-4"  >
-            <h1 class="text-dark">Tab 4  content</h1>
+            <div class="panel panel-default panel-condensed device-overview">
+                <div class="panel-heading py-2">
+                    <span class="text-dark h3"> Softwares</span>
+                </div>
+                <div class="panel-body text-dark  ">
+                    <div class="d-flex flex-wrap">
+                    </div>
+            </div>
+          </div>
           </div>
           <div class="tab-pane fade w-100 mb-3" id="tabs-5"  >
-            <h1 class="text-dark">Tab 5  content</h1>
+            <div class="panel panel-default panel-condensed device-overview">
+                <div class="panel-heading py-2">
+                    <span class="text-dark h3"> User accounts</span>
+                </div>
+                <div class="panel-body text-dark  ">
+                    <div>
+                        
+                    </div>
+            </div>
           </div>
-          <div class="tab-pane fade w-100 mb-3" id="tabs-6"  >
-            <h1 class="text-dark">Tab 6  content</h1>
           </div>
         </div>
           </div>
       </section>
-
+      
     @endsection
 
     @section('scripts')
@@ -287,9 +296,11 @@
     <script>
 
 $(document).ready(function () {
+    var ajax = new Ajax();
   var nav_item = document.querySelectorAll('.nav-item'); 
 
-nav_item.forEach((t) => t.addEventListener('click',function(){
+nav_item.forEach((t) => t.addEventListener('click',function(e){
+    e.preventDefault();
 if(nav_item){
 nav_item.forEach((t) => {
   if(t.children[0].classList.contains('tab-active')){
@@ -300,21 +311,29 @@ nav_item.forEach((t) => {
     document.getElementById(t.children[0].getAttribute('aria-controls')).classList.remove('active');
     document.getElementById(t.children[0].getAttribute('aria-controls')).classList.remove('show');
   }
+});
   var tab_nav = this.children[0];
   var target = tab_nav.getAttribute('aria-controls')
   var tab = document.getElementById(target);
   
+
+if (target != "tabs-1") {
+    url=tab_nav.href;
+    ajax.fetch(url,tab.children[0].children[1].children[0])
+}
+
+
   tab_nav.classList.add('tab-active')
   tab.classList.add('active')
   tab.classList.add('show')
   
-});
+
 }
 }));
 
 
 
-var ajax = new Ajax();
+
 var sub_nav_item = document.querySelectorAll('.sub-nav-item'); 
 
 sub_nav_item.forEach((t) => t.addEventListener('click',function(e){
@@ -360,6 +379,8 @@ ajax.fetch(
     ldisk_container.getAttribute('data-url'),
     ldisk_container.children[1]
 )
+
+
 
       });
      

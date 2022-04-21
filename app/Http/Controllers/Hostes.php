@@ -170,7 +170,7 @@ class Hostes extends Controller
                         <a href="/device/$id">
                             <div class="card-container">
                               <div class="image-holder">
-                                <img src="assets/logo/win10-default.jpg" alt="" />
+                                <img src="assets/logo/win10-default.jpg" />
                               </div>
                               <div class="card-body text-start">
                                 <div><h5 class="text-light fw-bold">$host_name</h5>
@@ -778,6 +778,273 @@ class Hostes extends Controller
                 EOD;
                 $div_group .= $row;
             }
+        return $div_group;
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
+    }
+
+    public function getIo($id)
+    {
+        $path = 'device/'.$id.'/io';
+        $div_group = '';
+        try {
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results = $apihandler->fetch();
+            $device_types = [];
+            foreach ($results as $value) {
+                $device_types[] = $value['device_type'];
+            }
+            $device_types = array_unique($device_types);
+            foreach ($device_types as $device_type) {
+                $device_type_group = '<div class="card my-2"><div class="card-header fw-bold h5">'.$device_type.'</div><div class="card-body">';
+                foreach ($results as $result) {
+                    $name = $result['name'];
+                    $description = $result['description'];
+                    $detailed_info = $result['detailed_info'];
+                    $status = $result['status'];
+                    $device_id = $result['device_id'];
+                    $dev_type = $result['device_type'];
+                    $infos = ''; 
+
+                    foreach ($detailed_info as $key => $value ){
+                        $infos .= '<div class="row">
+                        <div class="col-12">
+                            <div class="row ">
+                                <div class="col-3">'.$key.' </div>
+                                <div class="col-6"> : '.$value.'</div>
+                            </div>
+                        </div>
+                        
+                    </div>';
+
+                    }
+                    if($device_type == $dev_type){
+                        $row =  <<<EOD
+                            <div class="py-2">
+                                <h5 class="h5">$name</h5>
+                                <p style="font-size:14px">$description</p>
+                                <div class="row my-1">
+                                    <div class="col-3">Status</div>
+                                    <div class="col-6">$status</div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Device ID</div>
+                                    <div class="col-6">$device_id</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        $infos
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <hr>
+                    EOD;
+                    $device_type_group .= $row;
+                    }
+                    
+                }
+                $device_type_group .='</div></div>';
+                $div_group .= $device_type_group;
+               
+            }
+            
+        
+        return $div_group;
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
+    }
+
+    public function getSoftwaresDetailed($id,$softid)
+    {
+        $path = 'device/'.$id.'/softwares/'.$softid;
+        $div_group = '';
+        try {
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $result = $apihandler->fetch();
+            $name = $result['name'];
+            $version = $result['version'];
+            $description = $result['description'];
+            $identifying_number = $result['identifying_number'];
+            $install_date = $result['install_date'];
+            $install_location = $result['install_location'];
+            $install_source = $result['install_source'];
+            $vendor = $result['vendor'];
+            $install_state_descriptions = $result['install_state_descriptions'];
+            $assignment_type_descriptions = $result['assignment_type_descriptions'];
+
+            $row =  <<<EOD
+                <div class="card my-2 text-dark" id="soft_info">
+                <div class="card-header fw-bold h5">
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 flex-grow-1 bd-highlight">
+                    <h5 class="h5">$name $version</h5>
+                    <p style="font-size:14px">$description</p>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                    <a type="button" id="soft_close" class="btn btn-dark p-2"><i class='bx bx-window-close' ></i> </i>Close</a>
+                    </div>
+                </div>
+                       
+                </div>
+            <div class="card-body">
+                <div class="py-2">
+                
+                    <div class="row my-1">
+                        <div class="col-3">Identifying Number</div>
+                        <div class="col-6">$identifying_number</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3">Install_Date</div>
+                        <div class="col-6">$install_date</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3">Install Location</div>
+                        <div class="col-6">$install_location</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3">Install Source</div>
+                        <div class="col-6">$install_source</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3">vendor</div>
+                        <div class="col-6">$vendor</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3">Install State</div>
+                        <div class="col-6">$install_state_descriptions</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3">Assignment Type</div>
+                        <div class="col-6">$assignment_type_descriptions</div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            </div>
+            <script>
+            var soft_close = document.getElementById('soft_close');
+            var tab_4_body = document.getElementById('tabs-4').children[0].children[1].children[0];
+            $(soft_close).click(function () { 
+                $(tab_4_body).removeClass('d-none');
+                $('#soft_info').remove();
+            });
+            </script>
+            EOD;
+            $div_group .= $row;
+            
+        return $div_group;
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
+    }
+
+    
+    public function getSoftwares($id)
+    {
+        $path = 'device/'.$id.'/softwares';
+        $div_group = '';
+        try {
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results = $apihandler->fetch();
+            foreach ($results as $result) {
+                $name_slited =array_slice(explode(' ',$result['name']),0,3);
+                $name = implode(" ",$name_slited);;
+                $soft_id = $result['id'];
+                $row =  <<<EOD
+                <div class="card border-0 m-1 p-1 soft-card" style="width: 9rem; cursor:pointer" data-id="$soft_id">
+                        <img src="http://127.0.0.1:8000/assets/icons/software_22118.png" style="width:64px; height:64px; margin-right: auto; margin-left: auto;" 
+                        class=" rounded-circle card-img-top" >
+                        <div class="card-body" style="text-align:center;">
+                          
+                          <p class="card-text"> $name</p>
+                        </div>
+                      </div>
+                      
+                EOD;
+
+                $div_group .= $row;
+            }
+            $script = "<script>
+            var soft_card = document.querySelectorAll('.soft-card');
+            soft_card.forEach((t) => t.addEventListener('click',function(e){
+            var soft_id = this.getAttribute('data-id')
+            var tab_4 = document.getElementById('tabs-4').children[0].children[1];
+            var tab_4_body = document.getElementById('tabs-4').children[0].children[1].children[0];
+            $.get('/device/".$id."/softwares/'+soft_id, function(data, status){
+                
+                $(tab_4_body).addClass('d-none');
+                $(tab_4).append(data)
+                
+              });
+                }));
+                
+            </script>";
+            $div_group .= $script;
+        return $div_group;
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
+    }
+
+    public function getUserAccounts($id){
+        $path = 'device/'.$id.'/useraccounts';
+        $div_group = '<div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col-1">#</th>
+                    <th scope="col-2">Name</th>
+                    <th scope="col-2">Account Type</th>
+                    <th scope="col-2">Description</th>
+                    <th scope="col-1"></th>
+                    <th scope="col-2">Domain</th>
+                    <th scope="col-3">Full Name</th>
+                    <th scope="col-1">Status</th>
+                </tr>
+            </thead>
+            <tbody>';
+        try {
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results = $apihandler->fetch();
+            $i=0;
+            foreach ($results as $result) {
+                $i++;
+                $name = $result['name'];
+                $account_type = $result['account_type'];
+                $description = $result['description'];
+                $is_disabled = ($result['is_disabled'] == 1)? "Disabled" : "Enabled";
+                $domain = $result['domain'];
+                $full_name = $result['full_name'];
+                $local_account = ($result['local_account']==1) ? "Local Account" : "";
+                $password_required = ($result['password_required'] == 1)? "Password required" : "No Password";
+                $status = $result['status'];
+                $row =  <<<EOD
+                            <tr>
+                                <th scope="row">$i</th>
+                                <td>$name<br><span class="badge bg-secondary">$local_account</span></td>
+                                <td>$account_type</td>
+                                <td>$description<br>
+                                <span class="badge bg-dark">$password_required</span></td>
+                                <td>$is_disabled</td>
+                                <td>$domain</td>
+                                <td>$full_name</td>
+                                <td>$status</td>
+                            </tr>
+                       
+                      
+                EOD;
+
+                $div_group .= $row;
+            }
+            $div_group .= ' </tbody></table></div>';
+            
         return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
