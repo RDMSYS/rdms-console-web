@@ -32,14 +32,15 @@
 @endsection
 
 @section('body')
-{{-- @dd($result['host_name']) --}}
+@dd($result)
 <div class="py-2 ">
       <div class="d-flex bd-highlight">
         <div class="p-2 flex-grow-1 bd-highlight">
           <h2 class="h2">Add Device</h2>
         </div>
         <div class="p-2 bd-highlight">
-          <a href="{{route('hostes.index')}}"  type="button" class="btn btn-dark p-2"><i class='bx bx-arrow-back' style='color:#ffffff' ></i> </i>Back</a>
+          <a href="{{route('hostes.device.update',$result['host_id'])}}" id="update_db"  type="button" class="btn btn-primary p-2"><i class='bx bx-refresh' ></i> Update</a>
+          <a href="{{route('hostes.index')}}"  type="button" class="btn btn-dark p-2"><i class='bx bx-arrow-back' style='color:#ffffff' ></i> Back</a>
         </div>
       </div>
     </div>
@@ -64,7 +65,7 @@
                 >
               </li>
               <li class="nav-item">
-                <a
+                <a href="{{route('host.adapters.show',$result['host_id'])}}"
                   class="nav-link"
                   aria-controls="tabs-4"
                   >Network Adapters</a
@@ -74,14 +75,14 @@
                 <a
                 href="{{route('host.softwares.show',$result['host_id'])}}"
                   class="nav-link"
-                  aria-controls="tabs-4"
+                  aria-controls="tabs-5"
                   >Softwares</a
                 >
               </li>
               <li class="nav-item">
                 <a href="{{route('host.useraccounts.show',$result['host_id'])}}"
                   class="nav-link"
-                  aria-controls="tabs-5"
+                  aria-controls="tabs-6"
                   >User accounts</a
                 >
               </li>
@@ -265,15 +266,25 @@
           <div class="tab-pane fade w-100 mb-3" id="tabs-4"  >
             <div class="panel panel-default panel-condensed device-overview">
                 <div class="panel-heading py-2">
-                    <span class="text-dark h3"> Softwares</span>
+                    <span class="text-dark h3"> Network Adapters</span>
                 </div>
                 <div class="panel-body text-dark  ">
-                    <div class="d-flex flex-wrap">
+                    <div>
                     </div>
             </div>
           </div>
           </div>
           <div class="tab-pane fade w-100 mb-3" id="tabs-5"  >
+            <div class="panel panel-default panel-condensed device-overview">
+                <div class="panel-heading py-2">
+                    <span class="text-dark h3"> Softwares</span>
+                </div>
+                <div class="panel-body text-dark  ">
+                    <div class="d-flex flex-wrap"></div>
+            </div>
+          </div>
+          </div>
+          <div class="tab-pane fade w-100 mb-3" id="tabs-6"  >
             <div class="panel panel-default panel-condensed device-overview">
                 <div class="panel-heading py-2">
                     <span class="text-dark h3"> User accounts</span>
@@ -369,6 +380,14 @@ ajax.fetch(url,tab)
 
 }
 }));
+
+
+$('#update_db').click(function (e) { 
+  e.preventDefault();
+  var href = this.href;
+  ajax.action(href)
+});
+
 
 ajax.fetch(
     document.getElementById('sub-ex1').children[0].children[0].href,

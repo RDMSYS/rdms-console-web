@@ -18,6 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/devices', [Hostes::class,'index'])->name('hostes.index');
+Route::get('/device/{id}', [Hostes::class,'show'])->name('hostes.show');
 Route::get('/device/{id}/baseboard', [Hostes::class,'getBaseboard'])->name('host.baseboard.show');
 Route::get('/device/{id}/cpu', [Hostes::class,'getCpu'])->name('host.cpu.show');
 Route::get('/device/{id}/primary/memory', [Hostes::class,'getRam'])->name('host.ram.primary.memory');
@@ -29,8 +30,9 @@ Route::get('/device/{id}/io', [Hostes::class,'getIo'])->name('host.io.show');
 Route::get('/device/{id}/softwares/{softid}', [Hostes::class,'getSoftwaresDetailed'])->name('host.softwares.verbose');
 Route::get('/device/{id}/softwares', [Hostes::class,'getSoftwares'])->name('host.softwares.show');
 Route::get('/device/{id}/useraccounts', [Hostes::class,'getUserAccounts'])->name('host.useraccounts.show');
-Route::get('/device/{id}', [Hostes::class,'show'])->name('hostes.show');
-// Route::get('/device/{id}', [Hostes::class,'show'])->name('hostes.show');
+Route::get('/device/{id}/network/adapters', [Hostes::class,'getNetAdapter'])->name('host.adapters.show');
+Route::get('/device/{id}/network/ip/{intid}', [Hostes::class,'getNetAdapterIp'])->name('host.ip.show');
+Route::get('/device/update/device/db/{id}', [Hostes::class,'updateDevDb'])->name('hostes.device.update');
 // Route::get('/device/{id}', [Hostes::class,'show'])->name('hostes.show');
 // Route::get('/device/{id}', [Hostes::class,'show'])->name('hostes.show');
 

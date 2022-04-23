@@ -77,7 +77,10 @@ class ApiHandler
             curl_close($ch);
             if($http_status == 404){
                 throw new ApiException('Failed to connect to CDN',"Usually means there's a issue in CDN Server",404);
-            }elseif ($http_status == 502) {
+            }elseif ($http_status == 403) {
+                throw new ApiException($decode['head'],$decode['message'],502);
+            }
+            elseif ($http_status == 502) {
                 throw new ApiException($decode['head'],$decode['message'],502);
             }elseif ($http_status == 409){
                 throw new ApiException($decode['head'],$decode['message'],409);

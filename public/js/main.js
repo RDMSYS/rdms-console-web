@@ -216,10 +216,35 @@ class Ajax{
                 var alertBox = new AlertBox({head:e.responseJSON.head,message:e.responseJSON.message,code:e.responseJSON.code,age:3000});
                 var html = `<div class="mt-4"><h1 class="h4 text-dark text-center">${e.responseJSON.head}</h1><div><p class="text-center text-dark">${e.responseJSON.message}</p>`
                 alertBox.error()
-                console.log(html);
                 $(doc).html(html)
                 // preloader.stop()
                 
+
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+        });
+       return 
+    }
+
+    action(url){
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                console.log(result);
+                var alertBox = new AlertBox({head:result.head,message:result.message,age:3000});
+                alertBox.success()
+            },
+            error: function (e) {
+                var alertBox = new AlertBox({head:e.responseJSON.head,message:e.responseJSON.message,code:e.responseJSON.code,age:3000});
+                alertBox.error()
+                
+                console.log(e);
 
             },
             cache: false,

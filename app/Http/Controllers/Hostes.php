@@ -62,14 +62,14 @@ class Hostes extends Controller
                 'comstring.regex' => 'Please provide valid Community String ',
             ]
         );
-            
+
         $all_data = $request->post();
         unset($all_data['_token']);
         try {
             $path = 'device';
             $apihandler = new ApiHandler();
             $apihandler->path = $path;
-            $results=$apihandler->post($all_data);
+            $results = $apihandler->post($all_data);
             return $results;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), $error->getErrorCode());
@@ -86,15 +86,15 @@ class Hostes extends Controller
     public function show($id)
     {
         try {
-            $path = 'device/'.$id.'/overview';
+            $path = 'device/' . $id . '/overview';
             $apihandler = new ApiHandler();
             $apihandler->path = $path;
             $results = $apihandler->fetch();
         } catch (ApiException $error) {
-            return view('hostnotfound', ['error'=>$error->getErrorMessage()]);
+            return view('hostnotfound', ['error' => $error->getErrorMessage()]);
         }
 
-        return view('host',["result"=>$results[0]]);
+        return view('host', ["result" => $results[0]]);
     }
 
     /**
@@ -150,7 +150,7 @@ class Hostes extends Controller
                 $row = '';
                 $div_count = 4;
                 // $total_row = (round(count($results) / $div_count,0,PHP_ROUND_HALF_UP) == 0) ? 1 : round(count($results) / $div_count,0,PHP_ROUND_HALF_UP);
-                $total_row= ceil(count($results) / $div_count);
+                $total_row = ceil(count($results) / $div_count);
                 $j = 0;
                 while ($total_row) {
 
@@ -210,10 +210,10 @@ class Hostes extends Controller
 
     public function getBaseboard($id)
     {
-        $path = 'device/'.$id.'/baseboard';
+        $path = 'device/' . $id . '/baseboard';
         $div_group = '';
-            try {
-                $apihandler = new ApiHandler();
+        try {
+            $apihandler = new ApiHandler();
             $apihandler->path = $path;
             $results = $apihandler->fetch();
             $basebord_manufacturer = $results['basebord_manufacturer'];
@@ -265,35 +265,35 @@ class Hostes extends Controller
             
             EOD;
             return $div_group;
-            } catch (ApiException $error) {
-                return response()->json($error->getErrorMessage(), 404);
-            }
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
     }
     public function getCpu($id)
     {
-        $path = 'device/'.$id.'/cpu';
+        $path = 'device/' . $id . '/cpu';
         $div_group = '';
         try {
             $apihandler = new ApiHandler();
-        $apihandler->path = $path;
-        $results = $apihandler->fetch();
-        foreach ($results as $result) {
-            $manufacturer = $result['manufacturer'];
-            $name = $result['name'];
-            $description = $result['description'];
-            $family = $result['family'];
-            $address_width = $result['address_width'];
-            $arch = $result['arch'];
-            $number_of_cores = $result['number_of_cores'];
-            $number_of_logical_processors = $result['number_of_logical_processors'];
-            $current_clock_speed = $result['current_clock_speed'];
-            $max_clock_speed = $result['max_clock_speed'];
-            $l2_cache = $result['l2_cache'];
-            $l3_cache = $result['l3_cache'];
-            $status = $result['status'];
-            $dev_id = $result['dev_id'];
+            $apihandler->path = $path;
+            $results = $apihandler->fetch();
+            foreach ($results as $result) {
+                $manufacturer = $result['manufacturer'];
+                $name = $result['name'];
+                $description = $result['description'];
+                $family = $result['family'];
+                $address_width = $result['address_width'];
+                $arch = $result['arch'];
+                $number_of_cores = $result['number_of_cores'];
+                $number_of_logical_processors = $result['number_of_logical_processors'];
+                $current_clock_speed = $result['current_clock_speed'];
+                $max_clock_speed = $result['max_clock_speed'];
+                $l2_cache = $result['l2_cache'];
+                $l3_cache = $result['l3_cache'];
+                $status = $result['status'];
+                $dev_id = $result['dev_id'];
 
-            $row =  <<<EOD
+                $row =  <<<EOD
             <div class="panel panel-default panel-condensed device-overview">
                 <div class="panel-body text-dark">
                     <div>
@@ -360,37 +360,37 @@ class Hostes extends Controller
                 </div>
             </div>
         EOD;
-        $div_group .= $row;
-        }
+                $div_group .= $row;
+            }
 
-        return $div_group;
+            return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
     }
     public function getRam($id)
     {
-        $path = 'device/'.$id.'/primary/memory';
+        $path = 'device/' . $id . '/primary/memory';
         $div_group = '';
         try {
             $apihandler = new ApiHandler();
             $apihandler->path = $path;
             $results = $apihandler->fetch();
-        foreach ($results as $result) {
-            $capacity =$result['capacity'];
-            $clock_speed =$result['clock_speed'];
-            $data_width =$result['data_width'];
-            $device_locator =$result['device_locator'];
-            $manufacturer =$result['manufacturer'];
-            $max_voltage =$result['max_voltage'];
-            $memory_type =$result['memory_type'];
-            $min_voltage =$result['min_voltage'];
-            $part_number =$result['part_number'];
-            $serial_number =$result['serial_number'];
-            $tag =$result['tag'];
-            $form_factor =$result['form_factor'];
+            foreach ($results as $result) {
+                $capacity = $result['capacity'];
+                $clock_speed = $result['clock_speed'];
+                $data_width = $result['data_width'];
+                $device_locator = $result['device_locator'];
+                $manufacturer = $result['manufacturer'];
+                $max_voltage = $result['max_voltage'];
+                $memory_type = $result['memory_type'];
+                $min_voltage = $result['min_voltage'];
+                $part_number = $result['part_number'];
+                $serial_number = $result['serial_number'];
+                $tag = $result['tag'];
+                $form_factor = $result['form_factor'];
 
-            $row =  <<<EOD
+                $row =  <<<EOD
             <div class="panel panel-default panel-condensed device-overview">
                 <div class="panel-body text-dark">
                     <div>
@@ -444,10 +444,10 @@ class Hostes extends Controller
             </div>
 
             EOD;
-        $div_group .= $row;
-        }
+                $div_group .= $row;
+            }
 
-        return $div_group;
+            return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
@@ -455,7 +455,7 @@ class Hostes extends Controller
 
     public function getOs($id)
     {
-        $path = 'device/'.$id.'/os';
+        $path = 'device/' . $id . '/os';
         $div_group = '';
         try {
             $apihandler = new ApiHandler();
@@ -497,7 +497,7 @@ class Hostes extends Controller
             EOD;
 
 
-        return $div_group;
+            return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
@@ -505,7 +505,7 @@ class Hostes extends Controller
 
     public function getHdd($id)
     {
-        $path = 'device/'.$id.'/secondary/memory';
+        $path = 'device/' . $id . '/secondary/memory';
         $div_group = '';
         try {
             $apihandler = new ApiHandler();
@@ -593,7 +593,7 @@ class Hostes extends Controller
                 EOD;
                 $div_group .= $row;
             }
-        return $div_group;
+            return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
@@ -601,7 +601,7 @@ class Hostes extends Controller
 
     public function getGpu($id)
     {
-        $path = 'device/'.$id.'/gpu';
+        $path = 'device/' . $id . '/gpu';
         $div_group = '';
         try {
             $apihandler = new ApiHandler();
@@ -700,7 +700,7 @@ class Hostes extends Controller
                 EOD;
                 $div_group .= $row;
             }
-        return $div_group;
+            return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
@@ -708,7 +708,7 @@ class Hostes extends Controller
 
     public function getLdisk($id)
     {
-        $path = 'device/'.$id.'/logicaldrives';
+        $path = 'device/' . $id . '/logicaldrives';
         $div_group = '';
         try {
             $apihandler = new ApiHandler();
@@ -723,12 +723,12 @@ class Hostes extends Controller
                 $used_space = $result['used_space'];
                 $total_size = $result['total_size'];
 
-                $used_per = number_format(((float)explode(" ", $used_space)[0]*100)/(float)explode(" ", $total_size)[0],1);
-                if((int)$used_per < 50){
+                $used_per = number_format(((float)explode(" ", $used_space)[0] * 100) / (float)explode(" ", $total_size)[0], 1);
+                if ((int)$used_per < 50) {
                     $progress_color = "success";
-                }elseif ((int)$used_per > 50 && (int)$used_per < 85) {
+                } elseif ((int)$used_per > 50 && (int)$used_per < 85) {
                     $progress_color = "warning";
-                }else{
+                } else {
                     $progress_color = "danger";
                 }
 
@@ -778,7 +778,7 @@ class Hostes extends Controller
                 EOD;
                 $div_group .= $row;
             }
-        return $div_group;
+            return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
@@ -786,7 +786,7 @@ class Hostes extends Controller
 
     public function getIo($id)
     {
-        $path = 'device/'.$id.'/io';
+        $path = 'device/' . $id . '/io';
         $div_group = '';
         try {
             $apihandler = new ApiHandler();
@@ -798,7 +798,7 @@ class Hostes extends Controller
             }
             $device_types = array_unique($device_types);
             foreach ($device_types as $device_type) {
-                $device_type_group = '<div class="card my-2"><div class="card-header fw-bold h5">'.$device_type.'</div><div class="card-body">';
+                $device_type_group = '<div class="card my-2"><div class="card-header fw-bold h5">' . $device_type . '</div><div class="card-body">';
                 foreach ($results as $result) {
                     $name = $result['name'];
                     $description = $result['description'];
@@ -806,32 +806,31 @@ class Hostes extends Controller
                     $status = $result['status'];
                     $device_id = $result['device_id'];
                     $dev_type = $result['device_type'];
-                    $infos = ''; 
+                    $infos = '';
 
-                    foreach ($detailed_info as $key => $value ){
+                    foreach ($detailed_info as $key => $value) {
                         $infos .= '<div class="row">
                         <div class="col-12">
                             <div class="row ">
-                                <div class="col-3">'.$key.' </div>
-                                <div class="col-6"> : '.$value.'</div>
+                                <div class="col-12 col-md-3 fw-bold">' . $key . ' </div>
+                                <div class="col-12 col-md-6"> : ' . $value . '</div>
                             </div>
                         </div>
                         
                     </div>';
-
                     }
-                    if($device_type == $dev_type){
+                    if ($device_type == $dev_type) {
                         $row =  <<<EOD
                             <div class="py-2">
                                 <h5 class="h5">$name</h5>
                                 <p style="font-size:14px">$description</p>
                                 <div class="row my-1">
-                                    <div class="col-3">Status</div>
-                                    <div class="col-6">$status</div>
+                                    <div class="col-12  col-md-3 fw-bold">Status</div>
+                                    <div class="col-12 col-md-6">$status</div>
                                 </div>
                                 <div class="row my-1">
-                                    <div class="col-3">Device ID</div>
-                                    <div class="col-6">$device_id</div>
+                                    <div class="col-12 col-md-3 fw-bold">Device ID</div>
+                                    <div class="col-12 col-md-6">$device_id</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -842,25 +841,23 @@ class Hostes extends Controller
                             </div>
                             <hr>
                     EOD;
-                    $device_type_group .= $row;
+                        $device_type_group .= $row;
                     }
-                    
                 }
-                $device_type_group .='</div></div>';
+                $device_type_group .= '</div></div>';
                 $div_group .= $device_type_group;
-               
             }
-            
-        
-        return $div_group;
+
+
+            return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
     }
 
-    public function getSoftwaresDetailed($id,$softid)
+    public function getSoftwaresDetailed($id, $softid)
     {
-        $path = 'device/'.$id.'/softwares/'.$softid;
+        $path = 'device/' . $id . '/softwares/' . $softid;
         $div_group = '';
         try {
             $apihandler = new ApiHandler();
@@ -928,7 +925,7 @@ class Hostes extends Controller
             </div>
             <script>
             var soft_close = document.getElementById('soft_close');
-            var tab_4_body = document.getElementById('tabs-4').children[0].children[1].children[0];
+            var tab_4_body = document.getElementById('tabs-5').children[0].children[1].children[0];
             $(soft_close).click(function () { 
                 $(tab_4_body).removeClass('d-none');
                 $('#soft_info').remove();
@@ -936,25 +933,25 @@ class Hostes extends Controller
             </script>
             EOD;
             $div_group .= $row;
-            
-        return $div_group;
+
+            return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
     }
 
-    
+
     public function getSoftwares($id)
     {
-        $path = 'device/'.$id.'/softwares';
+        $path = 'device/' . $id . '/softwares';
         $div_group = '';
         try {
             $apihandler = new ApiHandler();
             $apihandler->path = $path;
             $results = $apihandler->fetch();
             foreach ($results as $result) {
-                $name_slited =array_slice(explode(' ',$result['name']),0,3);
-                $name = implode(" ",$name_slited);;
+                $name_slited = array_slice(explode(' ', $result['name']), 0, 3);
+                $name = implode(" ", $name_slited);;
                 $soft_id = $result['id'];
                 $row =  <<<EOD
                 <div class="card border-0 m-1 p-1 soft-card" style="width: 9rem; cursor:pointer" data-id="$soft_id">
@@ -974,9 +971,9 @@ class Hostes extends Controller
             var soft_card = document.querySelectorAll('.soft-card');
             soft_card.forEach((t) => t.addEventListener('click',function(e){
             var soft_id = this.getAttribute('data-id')
-            var tab_4 = document.getElementById('tabs-4').children[0].children[1];
-            var tab_4_body = document.getElementById('tabs-4').children[0].children[1].children[0];
-            $.get('/device/".$id."/softwares/'+soft_id, function(data, status){
+            var tab_4 = document.getElementById('tabs-5').children[0].children[1];
+            var tab_4_body = document.getElementById('tabs-5').children[0].children[1].children[0];
+            $.get('/device/" . $id . "/softwares/'+soft_id, function(data, status){
                 
                 $(tab_4_body).addClass('d-none');
                 $(tab_4).append(data)
@@ -986,14 +983,15 @@ class Hostes extends Controller
                 
             </script>";
             $div_group .= $script;
-        return $div_group;
+            return $div_group;
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
     }
 
-    public function getUserAccounts($id){
-        $path = 'device/'.$id.'/useraccounts';
+    public function getUserAccounts($id)
+    {
+        $path = 'device/' . $id . '/useraccounts';
         $div_group = '<div class="table-responsive">
         <table class="table">
             <thead>
@@ -1013,17 +1011,17 @@ class Hostes extends Controller
             $apihandler = new ApiHandler();
             $apihandler->path = $path;
             $results = $apihandler->fetch();
-            $i=0;
+            $i = 0;
             foreach ($results as $result) {
                 $i++;
                 $name = $result['name'];
                 $account_type = $result['account_type'];
                 $description = $result['description'];
-                $is_disabled = ($result['is_disabled'] == 1)? "Disabled" : "Enabled";
+                $is_disabled = ($result['is_disabled'] == 1) ? "Disabled" : "Enabled";
                 $domain = $result['domain'];
                 $full_name = $result['full_name'];
-                $local_account = ($result['local_account']==1) ? "Local Account" : "";
-                $password_required = ($result['password_required'] == 1)? "Password required" : "No Password";
+                $local_account = ($result['local_account'] == 1) ? "Local Account" : "";
+                $password_required = ($result['password_required'] == 1) ? "Password required" : "No Password";
                 $status = $result['status'];
                 $row =  <<<EOD
                             <tr>
@@ -1037,15 +1035,217 @@ class Hostes extends Controller
                                 <td>$full_name</td>
                                 <td>$status</td>
                             </tr>
-                       
-                      
                 EOD;
 
                 $div_group .= $row;
             }
             $div_group .= ' </tbody></table></div>';
+
+            return $div_group;
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
+    }
+
+    public function getNetAdapter($id)
+    {
+        $path = 'device/' . $id . '/network/adapters';
+        $div_group = '<div class="row mt-3">
+        <div class="col-4 fw-bold">Name</div>
+        <div class="col-2 fw-bold">Speed</div>
+        <div class="col-2 fw-bold">Status</div>
+        <div class="col-2 fw-bold"></div>
+        <div class="col-2 fw-bold">Mac Adderess</div>
+        </div>
+        <hr class="m-1"/>
+        ';
+        try {
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results = $apihandler->fetch();
+            $i = 0;
+            foreach ($results as $result) {
+                $name =  $result['name'];
+                $adapter_type = $result['adapter_type'];
+                $adapter_index = $result['adapter_index'];
+                $interface_index = $result['interface_index'];
+                $mac_address = $result['mac_address'];
+                $manufacturer = $result['manufacturer'];
+                $net_connection_id = $result['net_connection_id'];
+                $net_connection_status = ($result['net_connection_status'] == "Connected") ?
+                    "<span class='badge bg-success'>" . $result['net_connection_status'] . "</span>" : "<span class='badge bg-danger'>" . $result['net_connection_status'] . "</span>";
+                $speed = ((float)$result['speed']);
+
+                if ($speed > 0) {
+                    $i = floor(log($speed) / log(1000));
+                    $sizes = array('Bps', 'Kbps', 'Mbps', 'Gbps', 'Tbps', 'Pbps', 'Ebps', 'Zbps', 'Ybps');
+                    if (round($speed / 1000) < 99999999){
+                            $speedstr = sprintf('%.02F', round($speed / pow(1000, $i),1)) * 1 . ' ' . @$sizes[$i];
+                    }else{
+                        $speedstr=  "0 Bps";
+                    }
+
+                } else {
+                    $speedstr=  "0 Bps";
+                }
+                
+                $physical_adapter = ($result['physical_adapter'] == 1 ? "Physical Adapter" : "Virtual Adapter");
+                $row =  <<<EOD
+                        
+                        <div class="row my-2 py-1 " >
+                            <div class="col-4">
+                            <a href="JavaScript:void(0)" class="netadapter" data-int="$interface_index"> $name</a><br />
+                            <p class="m-0" style="font-size:12px;">$manufacturer</p>
+                                <span class="badge bg-dark">$physical_adapter</span>
+                                <span class="badge bg-dark">$adapter_type</span>
+                            </div>
+                            <div class="col-2"> $speedstr </div>
+                            <div class="col-2">$net_connection_status</div>
+                            <div class="col-2"><i class="bx bx-wifi"></i> $net_connection_id</div>
+                            <div class="col-2">$mac_address</div>
+                        </div>
+                        <hr/>
+                      
+                EOD;
+
+                $div_group .= $row;
+            }
+            $script = "<script>
+            var netadapter = document.querySelectorAll('.netadapter');
+            netadapter.forEach((t) => t.addEventListener('click',function(e){
+            var adapter_id = this.getAttribute('data-int')
+            console.log(adapter_id)
+            var tab_4 = document.getElementById('tabs-4').children[0].children[1];
+            var tab_4_body = document.getElementById('tabs-4').children[0].children[1].children[0];
+            $.get('/device/" . $id . "/network/ip/'+adapter_id, function(data, status){
+                 $(tab_4_body).addClass('d-none');
+                 $(tab_4).append(data)
+                });
+                }));
+                
+            </script>";
+            $div_group .= ' </tbody></table></div>';
+            $div_group .= $script;
+            return $div_group;
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
+    }
+
+    public function getNetAdapterIp($id,  $intid)
+    {
+        $path = 'device/' . $id . '/network/ip/' . $intid;
+        $div_group = '';
+        try {
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $result = $apihandler->fetch();
+            $default_gateway = $result['default_gateway'];
+            $dhcp_enabled = ($result['dhcp_enabled'])? "True" : "False";
+            $dhcp_lease_expires = $result['dhcp_lease_expires'];
+            $dhcp_lease_obtained = $result['dhcp_lease_obtained'];
+            $dhcp_server = $result['dhcp_server'];
+            $ip_index = $result['ip_index'];
+            $ip_v4 = '';
+            $ip_v6 = '';
+            foreach ($result['ip_v4'] as $ip) {
+                $ip_v4 .='<div>
+                    <span> : '.join(", ",$ip).'</span>
+                </div>';
+            }
+            foreach ($result['ip_v6'] as $ip) {
+                $ip_v6 .='<div>
+                    <span> : '.join(", ",$ip).'</span>
+                </div>';
+            }
+            $ip_connection_metric = $result['ip_connection_metric'];
+            $ip_enabled = $result['ip_enabled'];
             
-        return $div_group;
+            if($ip_enabled != 1){
+                $output = '<div class="card-body">
+                    <div class="py-2 text-center">
+                        There is no ip configured yet
+                    </div>
+                </div>';
+                }else{
+                $output = '
+                <div class="card-body">
+                <div class="py-2">
+                
+                    <div class="row my-1">
+                        <div class="col-3 fw-bold">IPV4</div>
+                        <div class="col-6">'.$ip_v4.'</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3 fw-bold">IPV6</div>
+                        <div class="col-6">'.$ip_v6.'</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3 fw-bold">Default Gatewayn</div>
+                        <div class="col-6"> : '.$default_gateway.'</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3 fw-bold">DHCP Enabled</div>
+                        <div class="col-6"> : '.$dhcp_enabled.'</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3 fw-bold">DHCP Lease Obtained</div>
+                        <div class="col-6"> : '.$dhcp_lease_obtained.'</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3 fw-bold">DHCP Lease Expires</div>
+                        <div class="col-6"> : '.$dhcp_lease_expires.'</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3 fw-bold">DHCP Server</div>
+                        <div class="col-6"> : '.$dhcp_server.'</div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col-3 fw-bold">IP Connection Metric</div>
+                        <div class="col-6"> : '.$ip_connection_metric.'</div>
+                    </div>
+                </div>
+            </div>';
+                }
+
+            $row =  <<<EOD
+                <div class="card my-2 text-dark" id="soft_info">
+                <div class="card-header fw-bold h5">
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 flex-grow-1 bd-highlight"></div>
+                    <div class="p-2 bd-highlight">
+                    <a type="button" id="net_close" class="btn btn-dark p-2"><i class='bx bx-window-close' ></i> </i>Close</a>
+                    </div>
+                </div>
+                </div>
+                $output
+            
+            </div>
+            <script>
+            var soft_close = document.getElementById('net_close');
+            var tab_4_body = document.getElementById('tabs-4').children[0].children[1].children[0];
+            $(soft_close).click(function () { 
+                $(tab_4_body).removeClass('d-none');
+                $('#soft_info').remove();
+            });
+            </script>
+            EOD;
+            $div_group .= $row;
+            return $div_group;
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
+    }
+
+    public function updateDevDb($id)
+    {
+        $path = 'device/' . $id . '/update/device/db';
+        try {
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $result = $apihandler->fetch();
+            return response()->json($result, 200);
+
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }
