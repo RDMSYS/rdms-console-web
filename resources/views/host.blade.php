@@ -32,11 +32,12 @@
 @endsection
 
 @section('body')
-@dd($result)
+{{-- @dd($result) --}}
 <div class="py-2 ">
       <div class="d-flex bd-highlight">
         <div class="p-2 flex-grow-1 bd-highlight">
-          <h2 class="h2">Add Device</h2>
+          <h2 class="h2">{!!$result['hostname']!!}</h2>
+          <p style="font-size:13px;font-style: italic; ">Last updated : {!!$result['updated_at']!!}</p>
         </div>
         <div class="p-2 bd-highlight">
           <a href="{{route('hostes.device.update',$result['host_id'])}}" id="update_db"  type="button" class="btn btn-primary p-2"><i class='bx bx-refresh' ></i> Update</a>
