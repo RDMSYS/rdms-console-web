@@ -18,9 +18,10 @@
     <section class="container" id="main_container" >
         <div class="container" >
             <div class="col-md-6">
-                <div class="card my-5" >
+                <div class="card" >
                     <div class="card-body">
-                        <form>
+                        <form id="user_reg" action="{{route('user.store')}}" method="POST">
+                            @csrf
                             <div class="form-group">
                                 <label for="fname">Full name : </label>
                                 <input type="text" class="form-control" id="fname" name="fname" aria-datatype="name"  aria-required="true" placeholder="Enter full name">
@@ -71,6 +72,17 @@
         var form_elemet = document.querySelectorAll(".form-control");
         var formClass = new FormClass(form_elemet)
         formClass.validate()
+
+        $("#user_reg").submit(function (e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    formClass.submit(
+        formData,$(this).attr('action'),
+        $(this).attr('method'),
+        document.getElementById('main_container'),
+        $(this))
+
+});
     </script>
 
 @endsection

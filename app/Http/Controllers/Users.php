@@ -34,7 +34,39 @@ class Users extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate(
+            [
+                'fname' => "required|regex:/^[a-zA-Z\- ]+$/",
+                'email' => 'required|regex:/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/',
+                'uname' => "required|regex:/^[a-zA-Z0-9]+$/",
+                'usertype' => "required",
+                'passwd' => "required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/",
+            ],
+            [
+                'fname.required' => 'The First name field is required.',
+                'fname.regex' => 'Please enter  valid name',
+                'email.required' => 'The email field is required.',
+                'email.regex' => 'Please enter a valid email',
+                'uname.required' => 'The username field is required.',
+                'uname.regex' => 'Please enter a valid username ',
+                'usertype.required' => 'The user type is required.',
+                'passwd.required' => 'The password field is required.',
+                'passwd.regex' => 'Please enter a valid password. It must contain 8 characters ',
+            ]
+        );
+
+        $all_data = $request->post();
+        unset($all_data['_token']);
+        try {
+            $path = 'user';
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results = $apihandler->post($all_data);
+            return $results;
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), $error->getErrorCode());
+        }
+        return false;
     }
 
     /**

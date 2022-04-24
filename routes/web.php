@@ -41,3 +41,4 @@ Route::post('/device/add', [Hostes::class,'store'])->name('hostes.store');
 Route::get('/devices/{viewtype}/{hoststatus}', [Hostes::class,'view'])->name('hostes.view');
 
 Route::get('/user/create', [Users::class,'create'])->name('user.create');
+Route::post('/user/create', [Users::class,'store'])->name('user.store');

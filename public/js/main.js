@@ -70,7 +70,7 @@ class FormClass {
                 err_msg: "Please provide valid Hostname",
             },
             name: {
-                regex : /^[a-zA-Z\-]+$/,
+                regex : /^[a-zA-Z\- ]+$/,
                 err_msg : "Enter a valid name"
             },
             username: {
@@ -229,11 +229,12 @@ class FormClass {
 
     submit(formData, action, method, parentEle,thisEle) {
         for (var key of formData.keys()) {
-            var curr_ele = document.getElementById(key);
+            var curr_ele = document.getElementById(key)
             if (curr_ele != null) {
                 var datatype = curr_ele.getAttribute("aria-datatype");
                 var isRequired = curr_ele.getAttribute("aria-required");
                 var info_msg = isRequired ? "*Requierd" : "Optional";
+
                 if (formData.get(key).trim() == "" && isRequired) {
                     curr_ele.classList.add("input-invalid");
                     curr_ele.previousElementSibling.classList.add("error-text");
@@ -242,19 +243,23 @@ class FormClass {
                     curr_ele.focus();
 
                     return;
-                } else if (
-                    !this.validation_man[datatype]['regex'].test(
-                        formData.get(key).trim()
-                    )
-                ) {
-                    curr_ele.classList.add("input-invalid");
-                    curr_ele.previousElementSibling.classList.add("error-text");
-                    curr_ele.nextElementSibling.classList.add("error-text");
-                    curr_ele.nextElementSibling.innerHTML =
-                    this.validation_man[datatype]["err_msg"];
-                    curr_ele.focus();
-                    return;
+                }else if(datatype != null){
+                    if (
+                        !this.validation_man[datatype]['regex'].test(
+                            formData.get(key).trim()
+                        )
+                    ) {
+                        curr_ele.classList.add("input-invalid");
+                        curr_ele.previousElementSibling.classList.add("error-text");
+                        curr_ele.nextElementSibling.classList.add("error-text");
+                        curr_ele.nextElementSibling.innerHTML =
+                        this.validation_man[datatype]["err_msg"];
+                        curr_ele.focus();
+                        return;
+                    }
                 }
+                
+                
             }
         }
 
@@ -353,15 +358,12 @@ class Ajax{
 
             },
             success: function (result) {
-                console.log(result);
                 var alertBox = new AlertBox({head:result.head,message:result.message,age:3000});
                 alertBox.success()
             },
             error: function (e) {
                 var alertBox = new AlertBox({head:e.responseJSON.head,message:e.responseJSON.message,code:e.responseJSON.code,age:3000});
                 alertBox.error()
-                
-                console.log(e);
 
             },
             cache: false,
