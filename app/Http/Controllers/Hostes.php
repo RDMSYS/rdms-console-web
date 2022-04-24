@@ -1181,7 +1181,7 @@ class Hostes extends Controller
                         <div class="col-6">'.$ip_v6.'</div>
                     </div>
                     <div class="row my-1">
-                        <div class="col-3 fw-bold">Default Gatewayn</div>
+                        <div class="col-3 fw-bold">Default Gateway</div>
                         <div class="col-6"> : '.$default_gateway.'</div>
                     </div>
                     <div class="row my-1">

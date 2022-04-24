@@ -35,11 +35,14 @@
 {{-- @dd($result) --}}
 <div class="py-2 ">
       <div class="d-flex bd-highlight">
-        <div class="p-2 flex-grow-1 bd-highlight">
+        <div class="p-2 flex-grow-1 bd-highlight ">
           <h2 class="h2">{!!$result['hostname']!!}</h2>
           <p style="font-size:13px;font-style: italic; ">Last updated : {!!$result['updated_at']!!}</p>
         </div>
         <div class="p-2 bd-highlight">
+         <div class="mx-2 d-inline"> <button type="button" class="btn btn-success" disabled><i class='bx bx-play' > </i> Start</button>
+          <button type="button" class="btn  btn-danger"><i class='bx bx-power-off'> </i> Shutdown</button>
+          <button type="button" class="btn  btn-warning text-white"><i class='bx bx-refresh' ></i> Reboot</button></div>
           <a href="{{route('hostes.device.update',$result['host_id'])}}" id="update_db"  type="button" class="btn btn-primary p-2"><i class='bx bx-refresh' ></i> Update</a>
           <a href="{{route('hostes.index')}}"  type="button" class="btn btn-dark p-2"><i class='bx bx-arrow-back' style='color:#ffffff' ></i> Back</a>
         </div>
@@ -108,13 +111,7 @@
                     </div>
                 </div>
                 <hr class="hr-primary" />
-                <div class="row">
-                    <div class="col-12">
-                        <button type="button" class="btn btn-sm btn-success"><i class='bx bx-play' > </i> Start</button>
-                        <button type="button" class="btn btn-sm btn-danger"><i class='bx bx-power-off'> </i> Shutdown</button>
-                        <button type="button" class="btn btn-sm  btn-warning text-white"><i class='bx bx-refresh' ></i> Reboot</button>
-                    </div>
-                </div>
+                
                 
                 </div>
                 <div class="col-12 col-md-6 mx-md-2 mx-2 ">
@@ -173,7 +170,7 @@
             </div>
             <div class="d-flex justify-content-between flex-md-row flex-column">
                 <div class="col-6">
-                    <div class="panel panel-default panel-condensed device-hardware  mt-4">
+                    <div class="panel panel-default panel-condensed device-hardware ">
                         <div class="panel-heading py-2">
                             <span class="text-dark h4"><i class='bx bxs-chip'></i> Hardware</span>
                         </div>

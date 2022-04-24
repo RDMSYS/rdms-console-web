@@ -67,12 +67,28 @@ class FormClass {
         this.validation_man = {
             alpha_num: {
                 regex: /^[a-zA-Z0-9-_]+(([',. -][a-zA-Z ])?[a-zA-Z0-9-_]*)*$/,
-                err_msg: "Please provide valid name",
+                err_msg: "Please provide valid Hostname",
+            },
+            name: {
+                regex : /^[a-zA-Z\-]+$/,
+                err_msg : "Enter a valid name"
+            },
+            username: {
+                regex : /^[a-zA-Z0-9]+$/,
+                err_msg : "Enter a valid name"
+            },
+            password: {
+                regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+                err_msg : "Strictly follow the rules given below"
             },
             serial_key: {
                 regex: /^([a-zA-Z0-9]){16}$/,
                 err_msg: "Enter a valid serial key. It must be 16 characters",
             },
+            email: {
+                regex : /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
+                err_msg : "Enter a valid Email"
+            }
         };
     }
     validate() {
@@ -80,15 +96,14 @@ class FormClass {
         this.element.forEach(function (element) {
             element.addEventListener("keyup", function (e) {
                 var datatype = String(this.getAttribute("aria-datatype"));
-
                 var isRequired = this.getAttribute("aria-required");
                 var info_msg = isRequired ? "*Requierd" : "Optional";
                 if (this.value.trim() == "") {
                     this.classList.add("input-invalid");
                     this.previousElementSibling.classList.add("error-text");
                     this.nextElementSibling.classList.add("error-text");
-
                     this.nextElementSibling.innerHTML = info_msg;
+                    
                 }
                  else if (
                     !validation_man[datatype]['regex'].test(this.value.trim())
@@ -105,6 +120,108 @@ class FormClass {
                     this.previousElementSibling.classList.remove("error-text");
                     this.nextElementSibling.classList.remove("error-text");
                     this.nextElementSibling.innerHTML = info_msg;
+                }
+                if(datatype == "password"){
+                    var lower = document.querySelector('[role="lowercase-char"]')
+                    var upper = document.querySelector('[role="uppercase-char"]')
+                    var numeric = document.querySelector('[role="numeric-char"]')
+                    var special = document.querySelector('[role="special-char"]')
+                    var max = document.querySelector('[role="max-char"]')
+
+                    if(this.value.trim() == "" || ! /^(?=.*[a-z])/.test(this.value.trim())){
+                        if (!lower.classList.contains('error-text')) {
+                            if (lower.classList.contains('success-text')) {
+                                lower.classList.remove('success-text')
+                            }
+                            lower.classList.add('error-text')
+                        }
+                    }else{
+                        if (!lower.classList.contains('success-text')) {
+                            if (lower.classList.contains('error-text')) {
+                                lower.classList.remove('error-text')
+                            }
+                            lower.classList.add('success-text')
+                        }
+                    }
+
+                    if(this.value.trim() == "" || ! /^(?=.*[A-Z])/.test(this.value.trim())){
+                        if (!upper.classList.contains('error-text')) {
+                            if (upper.classList.contains('success-text')) {
+                                upper.classList.remove('success-text')
+                            }
+                            upper.classList.add('error-text')
+                        }
+                    }else{
+                        if (!upper.classList.contains('success-text')) {
+                            if (upper.classList.contains('error-text')) {
+                                upper.classList.remove('error-text')
+                            }
+                            upper.classList.add('success-text')
+                        }
+                    }
+
+                    if(this.value.trim() == "" || ! /^(?=.*[0-9])/.test(this.value.trim())){
+                        if (!numeric.classList.contains('error-text')) {
+                            if (numeric.classList.contains('success-text')) {
+                                numeric.classList.remove('success-text')
+                            }
+                            numeric.classList.add('error-text')
+                        }
+                    }else{
+                        if (!numeric.classList.contains('success-text')) {
+                            if (numeric.classList.contains('error-text')) {
+                                numeric.classList.remove('error-text')
+                            }
+                            numeric.classList.add('success-text')
+                        }
+                    }
+
+                    if(this.value.trim() == "" || ! /^(?=.*[!@#\$%\^&\*])/.test(this.value.trim())){
+                        if (!special.classList.contains('error-text')) {
+                            if (special.classList.contains('success-text')) {
+                                special.classList.remove('success-text')
+                            }
+                            special.classList.add('error-text')
+                        }
+                    }else{
+                        if (!special.classList.contains('success-text')) {
+                            if (special.classList.contains('error-text')) {
+                                special.classList.remove('error-text')
+                            }
+                            special.classList.add('success-text')
+                        }
+                    }
+                    if(this.value.trim() == "" || ! /^(?=.*[!@#\$%\^&\*])/.test(this.value.trim())){
+                        if (!special.classList.contains('error-text')) {
+                            if (special.classList.contains('success-text')) {
+                                special.classList.remove('success-text')
+                            }
+                            special.classList.add('error-text')
+                        }
+                    }else{
+                        if (!special.classList.contains('success-text')) {
+                            if (special.classList.contains('error-text')) {
+                                special.classList.remove('error-text')
+                            }
+                            special.classList.add('success-text')
+                        }
+                    }
+
+                    if(this.value.trim() == "" || ! /^(?=.{8,})/.test(this.value.trim())){
+                        if (!max.classList.contains('error-text')) {
+                            if (max.classList.contains('success-text')) {
+                                max.classList.remove('success-text')
+                            }
+                            max.classList.add('error-text')
+                        }
+                    }else{
+                        if (!max.classList.contains('success-text')) {
+                            if (max.classList.contains('error-text')) {
+                                max.classList.remove('error-text')
+                            }
+                            max.classList.add('success-text')
+                        }
+                    }
                 }
             });
         });

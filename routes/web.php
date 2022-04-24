@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Hostes;
+use App\Http\Controllers\Users;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,8 +36,8 @@ Route::get('/device/{id}/network/ip/{intid}', [Hostes::class,'getNetAdapterIp'])
 Route::get('/device/update/device/db/{id}', [Hostes::class,'updateDevDb'])->name('hostes.device.update');
 // Route::get('/device/{id}', [Hostes::class,'show'])->name('hostes.show');
 // Route::get('/device/{id}', [Hostes::class,'show'])->name('hostes.show');
-
-
 Route::get('/devices/create', [Hostes::class,'create'])->name('hostes.create');
 Route::post('/device/add', [Hostes::class,'store'])->name('hostes.store');
 Route::get('/devices/{viewtype}/{hoststatus}', [Hostes::class,'view'])->name('hostes.view');
+
+Route::get('/user/create', [Users::class,'create'])->name('user.create');

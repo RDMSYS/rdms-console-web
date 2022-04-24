@@ -57,10 +57,17 @@
               <span class="nav_name">Dashboard</span>
             </a>
             <a href="{{route('hostes.index')}}" class="nav_link ">
-              <i class='bx bx-desktop nav_icon' style='color:#ffffff' ></i>
+              <i class='bx bx-desktop nav_icon' ></i>
               <span class="nav_name">Devices</span>
             </a>
-            
+            <a href="#" class="nav_link ">
+              <i class='bx bxs-user-circle' ></i>
+              <span class="nav_name">Users</span>
+            </a>
+            <a href="#" class="nav_link ">
+              <i class='bx bx-server'></i>
+              <span class="nav_name">Settings</span>
+            </a>
             
             
             
