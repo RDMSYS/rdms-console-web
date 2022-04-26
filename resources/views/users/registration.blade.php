@@ -11,7 +11,7 @@
           <h2 class="h2">Create a new user</h2>
         </div>
         <div class="p-2 bd-highlight">
-          <a href="{{route('hostes.index')}}"  type="button" class="btn btn-dark p-2"><i class='bx bx-arrow-back' style='color:#ffffff' ></i> </i>Back</a>
+          <a href="{{route('users.index')}}"  type="button" class="btn btn-dark p-2"><i class='bx bx-arrow-back' style='color:#ffffff' ></i> </i>Back</a>
         </div>
       </div>
     </div>
@@ -50,11 +50,11 @@
                                 <label for="passwd">Password: </label>
                                 <input type="password" class="form-control" aria-datatype="password" aria-required="true" id="passwd" Name='passwd' placeholder="Password">
                                 <span class="form-text "></span><br/>
-                                <label class="form-text " role="lowercase-char"><i class='bx bxs-check-circle' ></i> Must contain at least 1 lowercase alphabetical character</label>
-                                <label class="form-text " role="uppercase-char"><i class='bx bxs-check-circle' ></i> Must contain at least 1 uppercase alphabetical character</label>
-                                <label class="form-text " role="numeric-char"><i class='bx bxs-check-circle' ></i> Must contain at least 1 numeric character</label>
-                                <label class="form-text " role="special-char"><i class='bx bxs-check-circle' ></i> Must contain at least one special character</label>
-                                <label class="form-text " role="max-char"><i class='bx bxs-check-circle' ></i> Must be eight characters or longer</label>
+                                <label class="form-text " role="lowercase-char"><i class='bx bxs-check-circle' ></i> Must contain at least 1 lowercase alphabetical character</label><br/>
+                                <label class="form-text " role="uppercase-char"><i class='bx bxs-check-circle' ></i> Must contain at least 1 uppercase alphabetical character</label><br/>
+                                <label class="form-text " role="numeric-char"><i class='bx bxs-check-circle' ></i> Must contain at least 1 numeric character</label><br/>
+                                <label class="form-text " role="special-char"><i class='bx bxs-check-circle' ></i> Must contain at least one special character</label><br/>
+                                <label class="form-text " role="max-char"><i class='bx bxs-check-circle' ></i> Must be eight characters or longer</label><br/>
 
                             </div>
                             <button type="submit" class="btn btn-primary my-3">Submit</button>

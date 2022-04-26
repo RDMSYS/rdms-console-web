@@ -36,7 +36,12 @@
 <div class="py-2 ">
       <div class="d-flex bd-highlight">
         <div class="p-2 flex-grow-1 bd-highlight ">
-          <h2 class="h2">{!!$result['hostname']!!}</h2>
+          <h5 class="h5 fw-bold">{!!$result['nickname']!!} ({!!$result['host_name']!!}) </h5>
+          @if($result['is_online'] == 1)
+            <span class="badge bg-success">Online</span>
+          @else
+          <span class="badge bg-danger">offline</span>
+          @endif
           <p style="font-size:13px;font-style: italic; ">Last updated : {!!$result['updated_at']!!}</p>
         </div>
         <div class="p-2 bd-highlight">

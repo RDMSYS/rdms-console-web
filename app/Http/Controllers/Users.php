@@ -13,7 +13,17 @@ class Users extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $path = 'users';
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results = $apihandler->fetch();
+        }  catch (ApiException $error) {
+            return view('hostnotfound', ['error' => $error->getErrorMessage()]);
+        }
+        
+        return view("users.users", ['results' => $results]);
+
     }
 
     /**
@@ -88,7 +98,7 @@ class Users extends Controller
      */
     public function edit($id)
     {
-        //
+        return "Edit" . $id;
     }
 
     /**
@@ -111,6 +121,18 @@ class Users extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        try {
+            $path = 'user/'.$id;
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results = $apihandler->delete();
+            return back()->with("success",$results['message']);
+
+        }  catch (ApiException $error) {
+            return back()->with('fail',"Failed :".$error->getErrorMessage()['message']);
+        }
+        
+
     }
 }

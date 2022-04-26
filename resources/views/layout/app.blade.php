@@ -40,19 +40,19 @@
         <i class="bx bx-menu" id="header-toggle"></i>
       </div>
       <div class="header_img">
-        <img src="https://i.imgur.com/hczKIze.jpg" alt="" />
+      <img src="https://i.imgur.com/hczKIze.jpg" alt="" /> 
       </div>
       
     </header>
     <div class="l-navbar show" id="nav-bar">
       <nav class="main_nav">
         <div>
-          <a href="#" class="nav_logo">
+          <a href="{{route('dashboard.index')}}" class="nav_logo">
             <i class="bx bx-desktop nav_logo-icon"></i>
             <span class="nav_logo-name">Console</span>
           </a>
           <div class="nav_list">
-            <a href="#" class="nav_link active">
+            <a href="{{route('dashboard.index')}}" class="nav_link active">
               <i class="bx bx-grid-alt nav_icon"></i>
               <span class="nav_name">Dashboard</span>
             </a>
@@ -60,10 +60,12 @@
               <i class='bx bx-desktop nav_icon' ></i>
               <span class="nav_name">Devices</span>
             </a>
-            <a href="#" class="nav_link ">
+            @if(Session::get('level') == "Admin")
+            <a href="{{route('users.index')}}" class="nav_link ">
               <i class='bx bxs-user-circle' ></i>
               <span class="nav_name">Users</span>
             </a>
+            @endif
             <a href="#" class="nav_link ">
               <i class='bx bx-server'></i>
               <span class="nav_name">Settings</span>
@@ -73,7 +75,7 @@
             
           </div>
         </div>
-        <a href="#" class="nav_link">
+        <a href="{{route('logout')}}" class="nav_link">
           <i class="bx bx-log-out nav_icon"></i>
           <span class="nav_name">SignOut</span>
         </a>
