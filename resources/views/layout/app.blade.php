@@ -66,7 +66,7 @@
               <span class="nav_name">Users</span>
             </a>
             @endif
-            <a href="#" class="nav_link ">
+            <a href="{{route('settings.index')}}" class="nav_link ">
               <i class='bx bx-server'></i>
               <span class="nav_name">Settings</span>
             </a>

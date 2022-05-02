@@ -2,13 +2,13 @@
 @extends('./layout/app')
 
 
-@section('title',"Console | Hostes")
+@section('title',"Console | Edit Hostes")
 
 @section('body')
 <div class="py-2 ">
       <div class="d-flex bd-highlight">
         <div class="p-2 flex-grow-1 bd-highlight">
-          <h2 class="h2">Add Device</h2>
+          <h2 class="h2">Edit Device</h2>
         </div>
         <div class="p-2 bd-highlight">
           <a href="{{route('hostes.index')}}"  type="button" class="btn btn-dark p-2"><i class='bx bx-arrow-back' style='color:#ffffff' ></i> </i>Back</a>
@@ -33,7 +33,7 @@
             <a
               class="nav-link tab-active"
               aria-controls="tabs-2"
-              >Manual add device</a
+              >Modify device</a
             >
           </li>
          
@@ -52,22 +52,16 @@
                       <div class="col-md-5">
                           <div class="card " >
                               <div class="card-body">
-                                  <h3>Manual add</h3>
-                                  <form action="{{route('hostes.store')}}"  method="POST" id="add_dev">
+                                  <form action="{{route('host.update',$device_data['id'])}}"  method="POST" id="edit_dev">
                                     @csrf
                                       <div class="form-group my-1">
                                           <label for="hostname">Hostname or IP </label>
-                                          <input type="text" class="form-control " id="hostname" aria-datatype="alpha_num" name="hostname" aria-required="true"  placeholder="Hostname or IP">
+                                          <input type="text" class="form-control " value="{{$device_data['host']}}" id="hostname" aria-datatype="alpha_num" name="hostname" aria-required="true"  placeholder="Hostname or IP">
                                           <span style="font-size:13px">*Requierd</span>
                                         </div>
                                       <div class="form-group my-1">
-                                        <label for="serialno">Serial number </label>
-                                        <input type="text" class="form-control" id="serialno" name="serialno" aria-datatype="serial_key" aria-required="true" placeholder="Serial number">
-                                        <span style="font-size:13px">*Requierd</span>
-                                      </div>
-                                      <div class="form-group my-1">
                                         <label for="group">Group </label>
-                                        <input type="text" list="grouplist" class="form-control" id="group" aria-datatype="alpha_num" name="group" aria-required="true" placeholder="Group">
+                                        <input type="text" list="grouplist" value="{{$device_data['group']}}" class="form-control" id="group" aria-datatype="alpha_num" name="group" aria-required="true" placeholder="Group">
                                         <span style="font-size:13px">*Requierd</span>
                                         <datalist id="grouplist">
                                           @foreach($groups as $group)
@@ -78,11 +72,11 @@
                                       </div>
                                       <div class="form-group my-1">
                                         <label for="comstring">Community String </label>
-                                        <input type="text" class="form-control" id="comstring" name="comstring" aria-datatype="alpha_num" aria-required="true" placeholder="Community String">
+                                        <input type="text" class="form-control" value="{{$device_data['community']}}" id="comstring" name="comstring" aria-datatype="alpha_num" aria-required="true" placeholder="Community String">
                                         <span style="font-size:13px">*Requierd</span>
                                       </div>
                                       <div class="my-4">
-                                        <button type="submit" class="btn btn-primary">Add device</button>
+                                        <button type="submit" class="btn btn-primary">Modify</button>
                                       </div>
                                   </form>
                               </div>
@@ -138,10 +132,10 @@ var ajax
 var formClass = new FormClass(form_elemet)
 formClass.validate()
 
-$("#add_dev").submit(function (e) {
+$("#edit_dev").submit(function (e) {
     e.preventDefault();
     var formData = new FormData(this);
-    formClass.submit(formData,$(this).attr('action'),$(this).attr('method'),document.getElementById('main_container'),$(this))
+    formClass.submit(formData,$(this).attr('action'),$(this).attr('method'),document.getElementById('main_container'),$(this),true)
 
 });
 

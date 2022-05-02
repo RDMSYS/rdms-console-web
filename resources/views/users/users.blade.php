@@ -43,9 +43,12 @@
           </tr>
         </thead>
         <tbody>
+          <?php $i= 0; ?>
           @foreach($results as $user)
+          @if($user['user_id'] != session()->get('id'))
+          <?php $i++; ?>
           <tr>
-            <th scope="row">{{$loop->iteration}}</th>
+            <th scope="row">{{$i}}</th>
             <td>{!!$user['realname']!!}</td>
             <td>{!!$user['username']!!}</td>
             <td>{!!$user['email']!!}</td>
@@ -63,6 +66,8 @@
                 </form>
             </td>
           </tr>
+          @endif
+          
           @endforeach
         </tbody>
       </table>
@@ -84,6 +89,8 @@
                  return false;
              }
           });
+
+          
       });
     </script>
     @endsection

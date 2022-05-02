@@ -95,7 +95,27 @@
                   >User accounts</a
                 >
               </li>
-              
+              <li class="nav-item">
+                <a href="{{route('host.services.show',$result['host_id'])}}"
+                  class="nav-link"
+                  aria-controls="tabs-7"
+                  >Services</a
+                >
+              </li>
+              <li class="nav-item">
+                <a href="{{route('host.devicemanager.show',$result['host_id'])}}"
+                  class="nav-link"
+                  aria-controls="tabs-8"
+                  >Device Manager</a
+                >
+              </li>
+              <li class="nav-item">
+                <a href="{{route('host.process.show',$result['host_id'])}}"
+                  class="nav-link"
+                  aria-controls="tabs-7"
+                  >Processes</a
+                >
+              </li>
            
           </ul>
         </div>
@@ -291,6 +311,31 @@
             <div class="panel panel-default panel-condensed device-overview">
                 <div class="panel-heading py-2">
                     <span class="text-dark h3"> User accounts</span>
+                </div>
+                <div class="panel-body text-dark  ">
+                    <div>
+                        
+                    </div>
+            </div>
+          </div>
+          </div>
+          <div class="tab-pane fade w-100 mb-3" id="tabs-7"  >
+            <div class="panel panel-default panel-condensed device-overview">
+                <div class="panel-heading py-2">
+                    <span class="text-dark h3"> Services</span>
+                </div>
+                <div class="panel-body text-dark  ">
+                    <div>
+                        
+                    </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="tab-pane fade w-100 mb-3" id="tabs-8"  >
+            <div class="panel panel-default panel-condensed device-overview">
+                <div class="panel-heading py-2">
+                    <span class="text-dark h3"> Device Manager</span>
                 </div>
                 <div class="panel-body text-dark  ">
                     <div>

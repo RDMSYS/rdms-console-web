@@ -7,7 +7,6 @@
 
 @endsection
 @section('body')
-
 <div class="py-2 ">
       <div class="d-flex bd-highlight">
         <div class="p-2 flex-grow-1 bd-highlight">

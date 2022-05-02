@@ -88,9 +88,14 @@ class FormClass {
             email: {
                 regex : /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
                 err_msg : "Enter a valid Email"
+            },
+            opassword: {
+                regex : /^(?=.{8,})/,
+                err_msg : "Enter a valid old password"
             }
         };
-    }
+
+    }datatype
     validate() {
         let validation_man = this.validation_man;
         this.element.forEach(function (element) {
@@ -227,7 +232,7 @@ class FormClass {
         });
     }
 
-    submit(formData, action, method, parentEle,thisEle) {
+    submit(formData, action, method, parentEle,thisEle,redirect) {
         for (var key of formData.keys()) {
             var curr_ele = document.getElementById(key)
             if (curr_ele != null) {
@@ -263,9 +268,9 @@ class FormClass {
             }
         }
 
-        this.send(formData, action, method, parentEle,thisEle);
+        this.send(formData, action, method, parentEle,thisEle,redirect);
     }
-    send(formData, action, method, parentEle,thisEle) {
+    send(formData, action, method, parentEle,thisEle,redirect) {
         var preloader = new PreLoader(parentEle);
         $.ajax({
             url: action,
@@ -276,16 +281,21 @@ class FormClass {
             },
             success: function (result) {
                 preloader.stop();
-                thisEle.get(0).reset()
                 var alertBox = new AlertBox({
                     head: result.head,
                     message: result.message,
                     age: 3000,
                 });
                 alertBox.success();
+                thisEle.get(0).reset()
+                if(redirect){
+                    setTimeout(() => {
+                        window.history.back()
+                    }, 2000);
+                }
+
             },
             error: function (e) {
-                console.log(e);
                 if(e.status == 422){
                     for (const key in e.responseJSON.errors) {
                         var alertBox = new AlertBox({
