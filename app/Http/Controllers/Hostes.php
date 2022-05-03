@@ -21,7 +21,7 @@ class Hostes extends Controller
             $results = $apihandler->fetch();
             return view('hostes', ['results'=>$results]);
         }  catch (ApiException $error) {
-            return response()->json($error->getErrorMessage(), 404);
+            return view('hostnotfound', ['error' => $error->getErrorMessage()]);
         }
         
     }
@@ -100,7 +100,7 @@ class Hostes extends Controller
             $apihandler->path = $path;
             $results = $apihandler->fetch();
         } catch (ApiException $error) {
-            return view('hostnotfound', ['error' => $error->getErrorMessage()]);
+            return view('datanotfound', ['error' => $error->getErrorMessage()]);
         }
 
         return view('host', ["result" => $results[0]]);
@@ -1530,7 +1530,7 @@ class Hostes extends Controller
 
                             </div>
                             <div class="col-1 text-center">  $Priority </div>
-                            <div class="col-2 text-center">  $ </div>
+                            <div class="col-2 text-center">  $SessionId </div>
                             <div class="col-2 text-center">  $ParentProcessId </div>
                             <div class="col-2 text-center">$ProcessId</div>
                             <div class="col-2 text-center">$Status</div>
@@ -1559,6 +1559,33 @@ class Hostes extends Controller
             // $div_group .= $script;
             return $div_group;
 
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
+    }
+
+
+    public function shutdown($id)
+    {
+        $path = 'device/' . $id . '/shutdown';
+        try {
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $result = $apihandler->fetch();
+            return response()->json($result, 200);
+        } catch (ApiException $error) {
+            return response()->json($error->getErrorMessage(), 404);
+        }
+    }
+
+    public function reboot($id)
+    {
+        $path = 'device/' . $id . '/reboot';
+        try {
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $result = $apihandler->fetch();
+            return response()->json($result, 200);
         } catch (ApiException $error) {
             return response()->json($error->getErrorMessage(), 404);
         }

@@ -46,8 +46,15 @@
         </div>
         <div class="p-2 bd-highlight">
          <div class="mx-2 d-inline"> <button type="button" class="btn btn-success" disabled><i class='bx bx-play' > </i> Start</button>
-          <button type="button" class="btn  btn-danger"><i class='bx bx-power-off'> </i> Shutdown</button>
-          <button type="button" class="btn  btn-warning text-white"><i class='bx bx-refresh' ></i> Reboot</button></div>
+            <form class="shutdown d-inline" action="{{route('host.shutdown',$result['host_id'])}}" method="get">
+              @csrf
+            <button type="submit" class="btn  btn-danger"><i class='bx bx-power-off'> </i> Shutdown</button>
+            </form>
+            <form class="reboot d-inline" action="{{route('host.reboot',$result['host_id'])}}" method="get">
+              @csrf
+              <button type="submit" class="btn  btn-warning text-white"><i class='bx bx-refresh' ></i> Reboot</button>
+            </form>
+        </div>
           <a href="{{route('hostes.device.update',$result['host_id'])}}" id="update_db"  type="button" class="btn btn-primary p-2"><i class='bx bx-refresh' ></i> Update</a>
           <a href="{{route('hostes.index')}}"  type="button" class="btn btn-dark p-2"><i class='bx bx-arrow-back' style='color:#ffffff' ></i> Back</a>
         </div>
@@ -436,6 +443,28 @@ $('#update_db').click(function (e) {
   ajax.action(href)
 });
 
+$(".shutdown").submit(function (e){
+  e.preventDefault();
+  if(confirm("Are you sure you want to shutdown?"))
+  {
+    var href = this.action
+    ajax.action(href)
+  }else{
+    return false;
+  }
+
+})
+$(".reboot").submit(function (e){
+  e.preventDefault();
+  if(confirm("Are you sure you want to reboot?"))
+  {
+    var href = this.action
+    ajax.action(href)
+  }else{
+    return false;
+  }
+
+})
 
 ajax.fetch(
     document.getElementById('sub-ex1').children[0].children[0].href,

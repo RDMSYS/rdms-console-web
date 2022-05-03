@@ -13,10 +13,7 @@
           {{-- <h2 class="h2">Devices</h2> --}}
         </div>
         <div class="p-2 bd-highlight">
-          @if(Session::get('level') == "Admin")
-          <a href="{{route('hostes.create')}}"  type="button" class="btn btn-success p-2"><i class='bx bxs-plus-circle' style='color:#ffffff' > </i> Add new host</a>
-
-            @endif
+          <a href="{{route('hostes.index')}}"  type="button" class="btn btn-dark p-2"><i class='bx bx-arrow-back' style='color:#ffffff' ></i> </i>Back</a>
            </div>
       </div>
     </div>

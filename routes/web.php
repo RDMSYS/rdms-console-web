@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Hostes;
 use App\Http\Controllers\Users;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ApiHandler;
+use App\Http\Controllers\ApiException;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,9 +37,11 @@ Route::group(['middleware' => ['AuthCheck']], function () {
     Route::get('/device/{id}/services', [Hostes::class, 'getServices'])->name('host.services.show');
     Route::get('/device/{id}/devicemanager', [Hostes::class, 'getDevMgmt'])->name('host.devicemanager.show');
     Route::get('/device/{id}/process', [Hostes::class, 'getProcess'])->name('host.process.show');
-    Route::delete('/device/{id}', [Hostes::class, 'destroy'])->name('host.distroy');
-    Route::get('/device/{id}/edit', [Hostes::class, 'edit'])->name('host.edit');
-    Route::post('/device/{id}/update', [Hostes::class, 'update'])->name('host.update');
+    Route::delete('/device/{id}', [Hostes::class, 'destroy'])->name('host.distroy')->middleware('Admin');
+    Route::get('/device/{id}/edit', [Hostes::class, 'edit'])->name('host.edit')->middleware('Admin');
+    Route::post('/device/{id}/update', [Hostes::class, 'update'])->name('host.update')->middleware('Admin');
+    Route::get('/device/{id}/shutdown', [Hostes::class, 'shutdown'])->name('host.shutdown')->middleware('Admin');
+    Route::get('/device/{id}/reboot', [Hostes::class, 'reboot'])->name('host.reboot')->middleware('Admin');
 
     Route::get('/devices/create', [Hostes::class, 'create'])->name('hostes.create')->middleware('Admin');
     Route::post('/device/add', [Hostes::class, 'store'])->name('hostes.store')->middleware('Admin');
@@ -61,7 +65,17 @@ Route::group(['middleware' => ['AuthCheck']], function () {
 
 
     Route::get('/dashboard', function () {
-        return view("dashboard");
+        try {
+            $path = 'devices/dashboard';
+            $apihandler = new ApiHandler();
+            $apihandler->path = $path;
+            $results = $apihandler->fetch();
+
+        } catch (ApiException $error) {
+            return view('dashboard', ['dash' => []]);
+        }
+
+        return view("dashboard",["dash"=>$results]);
     })->name('dashboard.index');
 
 

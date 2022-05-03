@@ -29,7 +29,8 @@
         <div class="bd-highlight mx-2 rounded ">
           <button type="button" class="btn btn-sm btn-light  view_mode" id="view_mode_grid" ><i class='bx bxs-grid' style="font-size:20px" ></i></button>
           <button type="button"  class="btn btn-sm  btn-primary  view_mode" id="view_mode_list" ><i class='bx bx-list-ul' style="font-size:20px" ></i></button> 
-          </div>
+          
+        </div>
       </div>
     </div>
     <div class="row">
@@ -103,8 +104,17 @@
               <p class="m-0" style="font-size:12px;">{{$result['group']}}</p>
               </div>
               <div style="width:20%" class="p-4 flex-fill bd-highlight"><span class="badge bg-{!!$status_color!!}">{!!$host_status!!}</span></div>
-              <div style="width:20%" class="p-4 flex-fill bd-highlight d-flex">
+              <div style="width:30%" class="p-4 flex-fill bd-highlight d-flex">
                 @if(Session::get('level') == "Admin")
+                <form class="shutdown d-inline mx-2" action="{{route('host.shutdown',$result['id'])}}" method="get">
+                  @csrf
+                  <button type="submit" class="btn btn-sm btn-danger"><i class='bx bx-power-off'> </i></button>
+                </form>
+                <form class="reboot d-inline" action="{{route('host.reboot',$result['id'])}}" method="get">
+                  @csrf
+                  <button type="submit" class="btn btn-sm  btn-warning text-white"><i class='bx bx-refresh' ></i></button>
+                </form>
+
                 <form method="POST" class="delete_form mx-1" action="{{route('host.distroy',$result['id'])}}">
                   {{ method_field('DELETE') }}
                   {{  csrf_field() }}
@@ -132,6 +142,8 @@
     @section('scripts')
     <script>
     $(document).ready(function () {
+    var ajax = new Ajax();
+
     let origin = location.origin;
 
     var grid = $(".gird_view")
@@ -177,7 +189,29 @@
                  return false;
              }
           });
+$(".shutdown").submit(function (e){
+  e.preventDefault();
+  if(confirm("Are you sure you want to shutdown?"))
+  {
+    console.log(this.action);
+    var href = this.action
+    ajax.action(href)
+  }else{
+    return false;
+  }
 
+})
+$(".reboot").submit(function (e){
+  e.preventDefault();
+  if(confirm("Are you sure you want to reboot?"))
+  {
+    var href = this.action
+    ajax.action(href)
+  }else{
+    return false;
+  }
+
+})
   
 });
 
